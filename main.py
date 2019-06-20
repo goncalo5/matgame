@@ -5,6 +5,7 @@ from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy import properties as kp
+from kivy.animation import Animation
 
 
 levels = {
@@ -35,10 +36,12 @@ class MatGameApp(App):
     option_2 = kp.NumericProperty(1)
     option_3 = kp.NumericProperty(1)
     can_check_option = kp.BooleanProperty(True)
+    msg_color = kp.ListProperty([0,1,0,1])
     # add
     add_level = kp.NumericProperty(1)
-    add_counter = kp.NumericProperty(0)
+    add_counter = kp.NumericProperty(1)
     add_xp = kp.NumericProperty(0)
+    add_xp_to_add_label = kp.StringProperty("")
 
     def build(self):
         self.game = Game()
@@ -46,6 +49,7 @@ class MatGameApp(App):
     
     def new_problem(self):
         self.can_check_option = True
+        self.add_xp_to_add_label = ""
         possibles = levels[self.player_level]
         value1 = random.choice(possibles)
         value2 = random.choice(possibles)
@@ -76,11 +80,23 @@ class MatGameApp(App):
             if int(button.text) == self.correct_option:
                 button.background_color = (0, 1, 0, 1)
                 self.add_counter += 1
-                self.add_xp += self.add_counter
+                self.add_counter = max(self.add_counter, 1)
+                to_add = self.add_counter
+                self.msg_color = [0, 1, 0, 1]
+                sign = "+"
             else:
                 button.background_color = (1, 0, 0, 1)
                 self.add_counter -= 1
-                self.add_xp -= self.add_counter
+                self.add_counter = max(self.add_counter, 1)
+                to_add = -self.add_counter
+                self.msg_color = [1, 0, 0, 1]
+                sign = ""
+            # self.add_xp += to_add
+            new_xp = self.add_xp + to_add
+
+            Animation(add_xp=new_xp, duration=0.5).start(self)
+
+            self.add_xp_to_add_label = "{} {}".format(sign, to_add)
             self.can_check_option = False
     
     def on_add_xp(self, *args):

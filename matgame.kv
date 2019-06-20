@@ -33,7 +33,7 @@
             Label:
                 text: "level: {}".format(app.add_level)
             Label:
-                text: "xp: {}".format(app.add_xp)
+                text: "xp: {}".format(int(app.add_xp))
         Label:
             id: problem_label
             text: str(app.problem_label)
@@ -54,7 +54,9 @@
                 text: str(app.option_3)
                 on_press:
                     app.check_option(self)
-        Label
+        Label:
+            text: str(app.add_xp_to_add_label)
+            color: app.msg_color
         GridLayout:
             rows: 1
             Button:
