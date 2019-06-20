@@ -1,0 +1,83 @@
+
+<Menu>:
+    GridLayout:
+        cols: 1
+        Label:
+            id: player_level
+            text: "level: {}".format(app.player_level)
+        GridLayout:
+            rows: 1
+            Label:
+                text: "Matter"
+            Label:
+                text: "level"
+        GridLayout:
+            rows: 1
+            Button:
+                text: "Add"
+                on_press:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = "add_menu"
+                    app.new_problem_label()
+            Label:
+                text: str(app.add_level)
+
+<AddMenu>:
+    button_1: button_1
+    button_2: button_2
+    button_3: button_3
+    GridLayout:
+        cols: 1
+        Label:
+            text: "level: {}".format(app.add_level)
+        Label:
+            id: problem_label
+            text: str(app.problem_label)
+        GridLayout:
+            rows: 1
+            Button:
+                id: button_1
+                text: str(1)
+                on_press:
+                    self.background_color = 1,0,0,1
+            Button:
+                id: button_2
+                text: str(2)
+                on_press:
+                    self.background_color = 0,1,0,1
+            Button:
+                id: button_3
+                text: str(3)
+                on_press:
+                    self.background_color = 1,0,0,1
+        Label
+        GridLayout:
+            rows: 1
+            Button:
+                text: "Back"
+                on_press:
+                    root.manager.transition.direction = 'right'
+                    root.manager.current = "menu"
+            Label
+            Button:
+                text: "next"
+                on_press:
+                    root.button_1.background_color = 1,1,1,1
+                    root.button_2.background_color = 1,1,1,1
+                    root.button_3.background_color = 1,1,1,1
+                    app.new_problem_label()
+
+
+<Game>:
+    id: screen_manager
+    menu: menu
+    add_menu: add_menu
+    # current: "add_menu"
+    Menu:
+        id: menu
+        name: "menu"
+        manager: screen_manager
+    AddMenu:
+        id: add_menu
+        name: "add_menu"
+        manager: screen_manager
