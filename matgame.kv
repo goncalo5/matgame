@@ -28,8 +28,12 @@
     button_3: button_3
     GridLayout:
         cols: 1
-        Label:
-            text: "level: {}".format(app.add_level)
+        GridLayout:
+            rows: 1
+            Label:
+                text: "level: {}".format(app.add_level)
+            Label:
+                text: "xp: {}".format(app.add_xp)
         Label:
             id: problem_label
             text: str(app.problem_label)

@@ -1,4 +1,5 @@
 import random
+import math
 
 from kivy.app import App
 from kivy.uix.button import Button
@@ -26,19 +27,25 @@ class Game(ScreenManager):
 
 
 class MatGameApp(App):
-    # screen_manager = kp.ObjectProperty(None)
     player_level = kp.NumericProperty(1)
-    add_level = kp.NumericProperty(0)
+    player_xp = kp.NumericProperty(0)
+    # 
     problem_label = kp.StringProperty("")
     option_1 = kp.NumericProperty(1)
     option_2 = kp.NumericProperty(1)
     option_3 = kp.NumericProperty(1)
+    can_check_option = kp.BooleanProperty(True)
+    # add
+    add_level = kp.NumericProperty(1)
+    add_counter = kp.NumericProperty(0)
+    add_xp = kp.NumericProperty(0)
 
     def build(self):
         self.game = Game()
         return self.game
     
     def new_problem(self):
+        self.can_check_option = True
         possibles = levels[self.player_level]
         value1 = random.choice(possibles)
         value2 = random.choice(possibles)
@@ -65,10 +72,23 @@ class MatGameApp(App):
         self.option_3 = res[2]
     
     def check_option(self, button):
-        if int(button.text) == self.correct_option:
-            button.background_color = (0, 1, 0, 1)
-        else:
-            button.background_color = (1, 0, 0, 1)
+        if self.can_check_option:
+            if int(button.text) == self.correct_option:
+                button.background_color = (0, 1, 0, 1)
+                self.add_counter += 1
+                self.add_xp += self.add_counter
+            else:
+                button.background_color = (1, 0, 0, 1)
+                self.add_counter -= 1
+                self.add_xp -= self.add_counter
+            self.can_check_option = False
+    
+    def on_add_xp(self, *args):
+        self.add_xp = max(self.add_xp, 0)
+        print("change xp")
+        # y\:=\:\sqrt{.1\cdot x}+1
+        self.add_level = int((0.1 * self.add_xp)**0.5 + 1)
+        print("level", self.add_level, "xp", self.add_xp)
 
 
 
