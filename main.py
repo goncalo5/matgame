@@ -8,19 +8,14 @@ from kivy import properties as kp
 from kivy.animation import Animation
 
 
-levels = {
-    1: [0, 1, 2],
-    2: [0, 1, 2, 3, 4, 5]
-}
-
 LEVELS = {
     "exponent": 2,
     "options": [
-        "natural",
-        "integer",
-        "rational",
-        "real",
-        "complex"
+        "naturals",
+        "integers",
+        "rationals",
+        "reals",
+        "complexs"
     ],
     "min_xp_unblock": {
         "negatives": 50,
@@ -39,7 +34,11 @@ class AddMenu(Screen):
     pass
 
 
-class GameMenu(Screen):
+class AddNaturalsMenu(Screen):
+    pass
+
+
+class AddIntegersMenu(Screen):
     pass
 
 
@@ -58,11 +57,17 @@ class MatGameApp(App):
     can_check_option = kp.BooleanProperty(True)
     can_next = kp.BooleanProperty(True)
     msg_color = kp.ListProperty([0,1,0,1])
-    # add
-    add_level = kp.NumericProperty(1)
-    add_counter = kp.NumericProperty(1)
-    add_xp = kp.NumericProperty(0)
-    add_xp_to_add_label = kp.StringProperty("")
+    # addition
+    # Naturals
+    add_naturals_level = kp.NumericProperty(1)
+    add_naturals_counter = kp.NumericProperty(1)
+    add_naturals_xp = kp.NumericProperty(0)
+    add_naturals_xp_to_add_label = kp.StringProperty("")
+    # Întegers
+    add_integers_level = kp.NumericProperty(1)
+    add_integers_counter = kp.NumericProperty(1)
+    add_integers_xp = kp.NumericProperty(0)
+    add_integers_xp_to_add_label = kp.StringProperty("")
 
     def build(self):
         self.game = Game()
@@ -73,11 +78,14 @@ class MatGameApp(App):
             return
         self.can_next = False
         self.can_check_option = True
-        self.add_xp_to_add_label = ""
-        value1 = random.randint(0, self.add_level**LEVELS.get("exponent", 2))
-        value2 = random.randint(0, self.add_level**LEVELS.get("exponent", 2))
-        # value1 = random.choice(possibles)
-        # value2 = random.choice(possibles)
+        self.add_naturals_xp_to_add_label = ""
+        _max = self.add_naturals_level**LEVELS.get("exponent", 2)
+        if self.game.current == "add_naturals_menu":
+            _min = 0
+        if self.game.current == "add_integers_menu":
+            _min = -self.add_naturals_level**LEVELS.get("exponent", 2)
+        value1 = random.randint(_min, _max)
+        value2 = random.randint(_min, _max)
 
         self.problem_label = str("{} + {}".format(value1, value2))
         self.correct_option = self.calc_result(value1, value2)
@@ -89,9 +97,14 @@ class MatGameApp(App):
 
     def update_options(self):
         res = {self.correct_option}
+        _max = self.add_naturals_level**LEVELS.get("exponent", 2)
+        if self.game.current == "add_naturals_menu":
+            _min = 0
+        if self.game.current == "add_integers_menu":
+            _min = -self.add_naturals_level**LEVELS.get("exponent", 2)
         while len(res) < 3:
-            value1 = random.randint(0, self.add_level**LEVELS.get("exponent", 2))
-            value2 = random.randint(0, self.add_level**LEVELS.get("exponent", 2))
+            value1 = random.randint(_min, _max)
+            value2 = random.randint(_min, _max)
             new = self.calc_result(value1, value2)
             res.add(new)
         res = list(res)
@@ -103,29 +116,50 @@ class MatGameApp(App):
         if self.can_check_option:
             if int(button.text) == self.correct_option:
                 button.background_color = (0, 1, 0, 1)
-                self.add_counter += 1
-                self.add_counter = max(self.add_counter, 1)
-                to_add = self.add_counter
                 self.msg_color = [0, 1, 0, 1]
                 sign = "+"
+
+                if self.game.current == "add_naturals_menu":
+                    self.add_naturals_counter += 1
+                    self.add_naturals_counter = max(self.add_naturals_counter, 1)
+                    to_add = self.add_naturals_counter
+                elif self.game.current == "add_integers_menu":
+                    self.add_integers_counter += 1
+                    self.add_integers_counter = max(self.add_integers_counter, 1)
+                    to_add = self.add_integers_counter
             else:
                 button.background_color = (1, 0, 0, 1)
-                self.add_counter -= 1
-                self.add_counter = max(self.add_counter, 1)
-                to_add = -self.add_counter
                 self.msg_color = [1, 0, 0, 1]
                 sign = ""
-            new_xp = self.add_xp + to_add
 
-            Animation(add_xp=new_xp, duration=0.5).start(self)
+                if self.game.current == "add_naturals_menu":
+                    self.add_naturals_counter -= 1
+                    self.add_naturals_counter = max(self.add_naturals_counter, 1)
+                    to_add = -self.add_naturals_counter
+                elif self.game.current == "add_integers_menu":
+                    self.add_integers_counter -= 1
+                    self.add_integers_counter = max(self.add_integers_counter, 1)
+                    to_add = -self.add_integers_counter
 
-            self.add_xp_to_add_label = "{} {}".format(sign, to_add)
+            if self.game.current == "add_naturals_menu":
+                new_xp = self.add_naturals_xp + to_add
+                Animation(add_naturals_xp=new_xp, duration=0.5).start(self)
+                self.add_naturals_xp_to_add_label = "{} {}".format(sign, to_add)
+            elif self.game.current == "add_integers_menu":
+                new_xp = self.add_integers_xp + to_add
+                Animation(add_integers_xp=new_xp, duration=0.5).start(self)
+                self.add_integers_xp_to_add_label = "{} {}".format(sign, to_add)
+
             self.can_check_option = False
             self.can_next = True
     
-    def on_add_xp(self, *args):
-        self.add_xp = max(self.add_xp, 0)
-        self.add_level = int((0.1 * self.add_xp)**0.5 + 1)
+    def on_add_naturals_xp(self, *args):
+        self.add_naturals_xp = max(self.add_naturals_xp, 0)
+        self.add_naturals_level = int((0.1 * self.add_naturals_xp)**0.5 + 1)
+    
+    def on_add_integers_xp(self, *args):
+        self.add_integers_xp = max(self.add_integers_xp, 0)
+        self.add_integers_level = int((0.1 * self.add_integers_xp)**0.5 + 1)
 
 
 if __name__ == "__main__":

@@ -18,9 +18,8 @@
                 on_press:
                     root.manager.transition.direction = 'left'
                     root.manager.current = "add_menu"
-                    app.new_problem()
             Label:
-                text: str(app.add_level)
+                text: str(app.add_naturals_level + app.add_integers_level)
 
 <AddMenu>:
     GridLayout:
@@ -40,11 +39,24 @@
                 text: "natural"
                 on_press:
                     root.manager.transition.direction = 'left'
-                    root.manager.current = "game_menu"
+                    root.manager.current = "add_naturals_menu"
+                    app.new_problem()
             Label:
-                text: "level: {}".format(app.add_level)
+                text: "level: {}".format(app.add_naturals_level)
             Label:
-                text: "xp: {}".format(int(app.add_xp))
+                text: "xp: {}".format(int(app.add_naturals_xp))
+        GridLayout:
+            rows: 1
+            Button:
+                text: "Integers (naturals + negatives)"
+                on_press:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = "add_integers_menu"
+                    app.new_problem()
+            Label:
+                text: "level: {}".format(app.add_integers_level)
+            Label:
+                text: "xp: {}".format(int(app.add_integers_xp))
 
         Label:
         GridLayout:
@@ -55,7 +67,7 @@
                     root.manager.transition.direction = 'right'
                     root.manager.current = "menu"
 
-<GameMenu>:
+<AddNaturalsMenu>:
     button_1: button_1
     button_2: button_2
     button_3: button_3
@@ -64,9 +76,13 @@
         GridLayout:
             rows: 1
             Label:
-                text: "level: {}".format(app.add_level)
+                text: "Naturals"
+        GridLayout:
+            rows: 1
             Label:
-                text: "xp: {}".format(int(app.add_xp))
+                text: "level: {}".format(app.add_naturals_level)
+            Label:
+                text: "xp: {}".format(int(app.add_naturals_xp))
         Label:
             id: problem_label
             text: str(app.problem_label)
@@ -88,7 +104,62 @@
                 on_press:
                     app.check_option(self)
         Label:
-            text: str(app.add_xp_to_add_label)
+            text: str(app.add_naturals_xp_to_add_label)
+            color: app.msg_color
+        GridLayout:
+            rows: 1
+            Button:
+                text: "Back"
+                on_press:
+                    root.manager.transition.direction = 'right'
+                    root.manager.current = "add_menu"
+            Label
+            Button:
+                text: "next"
+                on_press:
+                    root.button_1.background_color = 1,1,1,1
+                    root.button_2.background_color = 1,1,1,1
+                    root.button_3.background_color = 1,1,1,1
+                    app.new_problem()
+
+<AddIntegersMenu>:
+    button_1: button_1
+    button_2: button_2
+    button_3: button_3
+    GridLayout:
+        cols: 1
+        GridLayout:
+            rows: 1
+            Label:
+                text: "Integers (naturals + negatives)"
+        GridLayout:
+            rows: 1
+            Label:
+                text: "level: {}".format(app.add_integers_level)
+            Label:
+                text: "xp: {}".format(int(app.add_integers_xp))
+        Label:
+            id: problem_label
+            text: str(app.problem_label)
+        GridLayout:
+            rows: 1
+            Button:
+                id: button_1
+                text: str(app.option_1)
+                on_press:
+                    app.check_option(self)
+            Button:
+                id: button_2
+                text: str(app.option_2)
+                on_press:
+                    app.check_option(self)
+            Button:
+                id: button_3
+                text: str(app.option_3)
+                on_press:
+                    app.check_option(self)
+        Label:
+            text: str(app.add_integers_xp_to_add_label)
             color: app.msg_color
         GridLayout:
             rows: 1
@@ -111,7 +182,8 @@
     id: screen_manager
     menu: menu
     add_menu: add_menu
-    game_menu: game_menu
+    add_naturals_menu: add_naturals_menu
+    add_integers_menu: add_integers_menu
     Menu:
         id: menu
         name: "menu"
@@ -120,7 +192,11 @@
         id: add_menu
         name: "add_menu"
         manager: screen_manager
-    GameMenu:
-        id: game_menu
-        name: "game_menu"
+    AddNaturalsMenu:
+        id: add_naturals_menu
+        name: "add_naturals_menu"
+        manager: screen_manager
+    AddIntegersMenu:
+        id: add_integers_menu
+        name: "add_integers_menu"
         manager: screen_manager
