@@ -36,6 +36,7 @@ class MatGameApp(App):
     option_2 = kp.NumericProperty(1)
     option_3 = kp.NumericProperty(1)
     can_check_option = kp.BooleanProperty(True)
+    can_next = kp.BooleanProperty(True)
     msg_color = kp.ListProperty([0,1,0,1])
     # add
     add_level = kp.NumericProperty(1)
@@ -48,6 +49,9 @@ class MatGameApp(App):
         return self.game
     
     def new_problem(self):
+        if not self.can_next:
+            return
+        self.can_next = False
         self.can_check_option = True
         self.add_xp_to_add_label = ""
         possibles = levels[self.player_level]
@@ -69,7 +73,6 @@ class MatGameApp(App):
             value2 = random.choice(possibles)
             new = self.calc_result(value1, value2)
             res.add(new)
-            print("new", new, res)
         res = list(res)
         self.option_1 = res[0]
         self.option_2 = res[1]
@@ -91,22 +94,17 @@ class MatGameApp(App):
                 to_add = -self.add_counter
                 self.msg_color = [1, 0, 0, 1]
                 sign = ""
-            # self.add_xp += to_add
             new_xp = self.add_xp + to_add
 
             Animation(add_xp=new_xp, duration=0.5).start(self)
 
             self.add_xp_to_add_label = "{} {}".format(sign, to_add)
             self.can_check_option = False
+            self.can_next = True
     
     def on_add_xp(self, *args):
         self.add_xp = max(self.add_xp, 0)
-        print("change xp")
-        # y\:=\:\sqrt{.1\cdot x}+1
         self.add_level = int((0.1 * self.add_xp)**0.5 + 1)
-        print("level", self.add_level, "xp", self.add_xp)
-
-
 
 
 if __name__ == "__main__":
