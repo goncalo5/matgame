@@ -58,7 +58,6 @@ class MatGameApp(App):
     can_check_option = kp.BooleanProperty(True)
     can_next = kp.BooleanProperty(True)
     msg_color = kp.ListProperty([0,1,0,1])
-    options = kp.ListProperty(LEVELS.get("options"))
     # add
     add_level = kp.NumericProperty(1)
     add_counter = kp.NumericProperty(1)
@@ -75,23 +74,24 @@ class MatGameApp(App):
         self.can_next = False
         self.can_check_option = True
         self.add_xp_to_add_label = ""
-        possibles = levels[self.player_level]
-        value1 = random.choice(possibles)
-        value2 = random.choice(possibles)
+        value1 = random.randint(0, self.add_level**LEVELS.get("exponent", 2))
+        value2 = random.randint(0, self.add_level**LEVELS.get("exponent", 2))
+        # value1 = random.choice(possibles)
+        # value2 = random.choice(possibles)
 
         self.problem_label = str("{} + {}".format(value1, value2))
         self.correct_option = self.calc_result(value1, value2)
 
-        self.update_options(possibles)
+        self.update_options()
     
     def calc_result(self, value1, value2):
         return value1 + value2
 
-    def update_options(self, possibles):
+    def update_options(self):
         res = {self.correct_option}
         while len(res) < 3:
-            value1 = random.choice(possibles)
-            value2 = random.choice(possibles)
+            value1 = random.randint(0, self.add_level**LEVELS.get("exponent", 2))
+            value2 = random.randint(0, self.add_level**LEVELS.get("exponent", 2))
             new = self.calc_result(value1, value2)
             res.add(new)
         res = list(res)
