@@ -14,7 +14,7 @@
         GridLayout:
             rows: 1
             Button:
-                text: "Add"
+                text: "Addition"
                 on_press:
                     root.manager.transition.direction = 'left'
                     root.manager.current = "add_menu"
@@ -23,6 +23,39 @@
                 text: str(app.add_level)
 
 <AddMenu>:
+    GridLayout:
+        cols: 1
+        Label:
+            text: "Addition Menu"
+        GridLayout:
+            rows: 1
+            Label:
+            Label:
+                text: "Level"
+            Label:
+                text: "XP"
+        GridLayout:
+            rows: 1
+            Button:
+                text: "natural"
+                on_press:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = "game_menu"
+            Label:
+                text: "level: {}".format(app.add_level)
+            Label:
+                text: "xp: {}".format(int(app.add_xp))
+
+        Label:
+        GridLayout:
+            rows: 1
+            Button:
+                text: "Back"
+                on_press:
+                    root.manager.transition.direction = 'right'
+                    root.manager.current = "menu"
+
+<GameMenu>:
     button_1: button_1
     button_2: button_2
     button_3: button_3
@@ -63,7 +96,7 @@
                 text: "Back"
                 on_press:
                     root.manager.transition.direction = 'right'
-                    root.manager.current = "menu"
+                    root.manager.current = "add_menu"
             Label
             Button:
                 text: "next"
@@ -78,7 +111,7 @@
     id: screen_manager
     menu: menu
     add_menu: add_menu
-    # current: "add_menu"
+    game_menu: game_menu
     Menu:
         id: menu
         name: "menu"
@@ -86,4 +119,8 @@
     AddMenu:
         id: add_menu
         name: "add_menu"
+        manager: screen_manager
+    GameMenu:
+        id: game_menu
+        name: "game_menu"
         manager: screen_manager

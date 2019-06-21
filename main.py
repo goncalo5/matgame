@@ -13,6 +13,22 @@ levels = {
     2: [0, 1, 2, 3, 4, 5]
 }
 
+LEVELS = {
+    "exponent": 2,
+    "options": [
+        "natural",
+        "integer",
+        "rational",
+        "real",
+        "complex"
+    ],
+    "min_xp_unblock": {
+        "negatives": 50,
+        "fraction": 250,
+        "irrational": 1250,
+        "imaginary": 6250
+    }
+}
 
 
 class Menu(Screen):
@@ -20,6 +36,10 @@ class Menu(Screen):
 
 
 class AddMenu(Screen):
+    pass
+
+
+class GameMenu(Screen):
     pass
 
 
@@ -38,6 +58,7 @@ class MatGameApp(App):
     can_check_option = kp.BooleanProperty(True)
     can_next = kp.BooleanProperty(True)
     msg_color = kp.ListProperty([0,1,0,1])
+    options = kp.ListProperty(LEVELS.get("options"))
     # add
     add_level = kp.NumericProperty(1)
     add_counter = kp.NumericProperty(1)
