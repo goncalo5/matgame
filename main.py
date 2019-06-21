@@ -24,7 +24,14 @@ LEVELS = {
         "imaginary": 6250
     }
 }
-
+# MENU_MATTERS = {
+#     "add_naturals_menu": "Naturals",
+#     "add_integers_menu": "Integers (naturals + negatives)"
+# }
+MENU_MATTERS = {
+    "add_naturals": "Naturals",
+    "add_integers": "Integers (naturals + negatives)"
+}
 
 class Menu(Screen):
     pass
@@ -34,11 +41,7 @@ class AddMenu(Screen):
     pass
 
 
-class AddNaturalsMenu(Screen):
-    pass
-
-
-class AddIntegersMenu(Screen):
+class GameMenu(Screen):
     pass
 
 
@@ -57,32 +60,53 @@ class MatGameApp(App):
     can_check_option = kp.BooleanProperty(True)
     can_next = kp.BooleanProperty(True)
     msg_color = kp.ListProperty([0,1,0,1])
+    current_matter_name = kp.StringProperty("add_naturals")
+    current_matter_level = kp.NumericProperty(1)
+    current_matter_xp = kp.NumericProperty(1)
+    current_xp_to_add_label = kp.StringProperty("")
+
     # addition
     # Naturals
     add_naturals_level = kp.NumericProperty(1)
     add_naturals_counter = kp.NumericProperty(1)
     add_naturals_xp = kp.NumericProperty(0)
-    add_naturals_xp_to_add_label = kp.StringProperty("")
     # Întegers
     add_integers_level = kp.NumericProperty(1)
     add_integers_counter = kp.NumericProperty(1)
     add_integers_xp = kp.NumericProperty(0)
-    add_integers_xp_to_add_label = kp.StringProperty("")
 
     def build(self):
         self.game = Game()
         return self.game
     
+    def change_current_matter(self, new_matter):
+        print("change_current_matter", new_matter)
+        self.current_matter_name = new_matter
+        self.update_currents()
+        print("current", self.current_matter_level, self.current_matter_xp)
+
+    def update_currents(self):
+        if self.current_matter_name == "add_naturals":
+            self.current_matter_level = self.add_naturals_level
+            self.current_matter_xp = self.add_naturals_xp
+        elif self.current_matter_name == "add_integers":
+            self.current_matter_level = self.add_integers_level
+            self.current_matter_xp = self.add_integers_xp
+
     def new_problem(self):
+        print("new_problem")
+        self.update_currents()
+
         if not self.can_next:
             return
+        print("self.current_matter_name", self.current_matter_name)
         self.can_next = False
         self.can_check_option = True
-        self.add_naturals_xp_to_add_label = ""
+        self.current_xp_to_add_label = ""
         _max = self.add_naturals_level**LEVELS.get("exponent", 2)
-        if self.game.current == "add_naturals_menu":
+        if self.current_matter_name == "add_naturals":
             _min = 0
-        if self.game.current == "add_integers_menu":
+        if self.current_matter_name == "add_integers":
             _min = -self.add_naturals_level**LEVELS.get("exponent", 2)
         value1 = random.randint(_min, _max)
         value2 = random.randint(_min, _max)
@@ -98,9 +122,9 @@ class MatGameApp(App):
     def update_options(self):
         res = {self.correct_option}
         _max = self.add_naturals_level**LEVELS.get("exponent", 2)
-        if self.game.current == "add_naturals_menu":
+        if self.current_matter_name == "add_naturals":
             _min = 0
-        if self.game.current == "add_integers_menu":
+        if self.current_matter_name == "add_integers":
             _min = -self.add_naturals_level**LEVELS.get("exponent", 2)
         while len(res) < 3:
             value1 = random.randint(_min, _max)
@@ -119,11 +143,11 @@ class MatGameApp(App):
                 self.msg_color = [0, 1, 0, 1]
                 sign = "+"
 
-                if self.game.current == "add_naturals_menu":
+                if self.current_matter_name == "add_naturals":
                     self.add_naturals_counter += 1
                     self.add_naturals_counter = max(self.add_naturals_counter, 1)
                     to_add = self.add_naturals_counter
-                elif self.game.current == "add_integers_menu":
+                elif self.current_matter_name == "add_integers":
                     self.add_integers_counter += 1
                     self.add_integers_counter = max(self.add_integers_counter, 1)
                     to_add = self.add_integers_counter
@@ -132,23 +156,24 @@ class MatGameApp(App):
                 self.msg_color = [1, 0, 0, 1]
                 sign = ""
 
-                if self.game.current == "add_naturals_menu":
+                if self.current_matter_name == "add_naturals":
                     self.add_naturals_counter -= 1
                     self.add_naturals_counter = max(self.add_naturals_counter, 1)
                     to_add = -self.add_naturals_counter
-                elif self.game.current == "add_integers_menu":
+                elif self.current_matter_name == "add_integers":
                     self.add_integers_counter -= 1
                     self.add_integers_counter = max(self.add_integers_counter, 1)
                     to_add = -self.add_integers_counter
 
-            if self.game.current == "add_naturals_menu":
-                new_xp = self.add_naturals_xp + to_add
-                Animation(add_naturals_xp=new_xp, duration=0.5).start(self)
-                self.add_naturals_xp_to_add_label = "{} {}".format(sign, to_add)
-            elif self.game.current == "add_integers_menu":
+            if self.current_matter_name == "add_naturals":
+                self.add_naturals_xp += to_add
+
+                Animation(current_matter_xp=self.add_naturals_xp, duration=0.5).start(self)
+                self.current_xp_to_add_label = "{} {}".format(sign, to_add)
+            elif self.current_matter_name == "add_integers":
                 new_xp = self.add_integers_xp + to_add
                 Animation(add_integers_xp=new_xp, duration=0.5).start(self)
-                self.add_integers_xp_to_add_label = "{} {}".format(sign, to_add)
+                self.current_xp_to_add_label = "{} {}".format(sign, to_add)
 
             self.can_check_option = False
             self.can_next = True
