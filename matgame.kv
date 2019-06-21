@@ -19,7 +19,7 @@
                     root.manager.transition.direction = 'left'
                     root.manager.current = "add_menu"
             Label:
-                text: str(app.add_naturals_level + app.add_integers_level)
+                text: str(app.addition.naturals.level + app.addition.integers.level)
 
 <AddMenu>:
     GridLayout:
@@ -43,9 +43,9 @@
                     app.change_current_matter("add_naturals")
                     app.new_problem()
             Label:
-                text: "level: {}".format(app.add_naturals_level)
+                text: "level: {}".format(app.addition.naturals.level)
             Label:
-                text: "xp: {}".format(int(app.add_naturals_xp))
+                text: "xp: {}".format(int(app.addition.naturals.xp))
         GridLayout:
             rows: 1
             Button:
@@ -56,9 +56,9 @@
                     app.change_current_matter("add_integers")
                     app.new_problem()
             Label:
-                text: "level: {}".format(app.add_integers_level)
+                text: "level: {}".format(app.addition.integers.level)
             Label:
-                text: "xp: {}".format(int(app.add_integers_xp))
+                text: "xp: {}".format(int(app.addition.integers.xp))
 
         Label:
         GridLayout:
