@@ -127,6 +127,10 @@ class MatGameApp(App):
     def build(self):
         self.game = Game()
         return self.game
+
+    def clean_buttons(self, buttons):
+        for button in buttons:
+            button.background_color = 1,1,1,1
     
     def try_change_to_game_menu(self, submatter_name):
         print("try_change_to_game_menu", submatter_name)

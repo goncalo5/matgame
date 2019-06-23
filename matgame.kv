@@ -115,9 +115,7 @@
     color: app.msg_color
 
 <GameMenu>:
-    button_1: button_1
-    button_2: button_2
-    button_3: button_3
+    buttons: [button_1, button_2, button_3]
     GridLayout:
         cols: 1
         MatterHeader
@@ -147,18 +145,14 @@
                 text: "Back"
                 on_press:
                     app.update_labels()
-                    root.button_1.background_color = 1,1,1,1
-                    root.button_2.background_color = 1,1,1,1
-                    root.button_3.background_color = 1,1,1,1
+                    app.clean_buttons(root.buttons)
                     root.manager.transition.direction = 'right'
                     root.manager.current = "matter_menu"
             Label
             Button:
                 text: "next"
                 on_press:
-                    root.button_1.background_color = 1,1,1,1
-                    root.button_2.background_color = 1,1,1,1
-                    root.button_3.background_color = 1,1,1,1
+                    app.clean_buttons(root.buttons)
                     app.new_problem()
 
 
