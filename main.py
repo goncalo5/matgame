@@ -133,9 +133,11 @@ class MatGameApp(App):
         self.can_next = False
         self.can_check_option = True
         self.current_xp_to_add_label = ""
+        n_of_values = 2
         _min, _max = self.calc_min_and_max()
-        value1 = random.randint(_min, _max)
-        value2 = random.randint(_min, _max)
+        values = []
+        for i in range(n_of_values):
+            values.append(random.randint(_min, _max))
 
         map_matter2sign = {
             "addition": "+",
@@ -144,17 +146,25 @@ class MatGameApp(App):
             "divison": "/",
         }
         sign = map_matter2sign.get(self.current_matter_name)
-        self.problem_label = str("{} {} {}".format(value1, sign, value2))
+        values_to_show = []
+        for i, value in enumerate(values):
+            print("value", value)
+            values_to_show.append("(%s)" % value if value < 0 else value)
+        self.problem_label = str("{} {} {}".format(values_to_show[0], sign, values_to_show[1]))
 
-        self.correct_option = self.calc_result(value1, value2)
+        print("values", values)
+        self.correct_option = self.calc_result(values[0], values[1])
+        print("correct", self.correct_option)
 
         self.update_options()
     
     def calc_result(self, value1, value2):
         if self.current_matter_name == "addition":
-            return value1 + value2
+            res = value1 + value2
         elif self.current_matter_name == "subtraction":
-            return value1 - value2
+            res = value1 - value2
+        print("res", res)
+        return res
 
     def update_options(self):
         res = {self.correct_option}
