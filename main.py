@@ -107,9 +107,8 @@ class MatGameApp(App):
     labels_submatters_cost = kp.ListProperty([0, 0])
 
     problem_label = kp.StringProperty("")
-    option_1 = kp.NumericProperty(1)
-    option_2 = kp.NumericProperty(1)
-    option_3 = kp.NumericProperty(1)
+    list_options = kp.ListProperty([0, 0, 0])
+
     can_check_option = kp.BooleanProperty(True)
     can_next = kp.BooleanProperty(True)
     msg_color = kp.ListProperty([0,1,0,1])
@@ -147,10 +146,11 @@ class MatGameApp(App):
             else:
                 print("you dont have enough gold, sorry")
                 return
-        
+
         self.game.transition.direction = 'left'
         self.game.current = "game_menu"
         self.current_submatter_name = submatter_name
+        
         self.new_problem()
         self.update_labels()
 
@@ -170,6 +170,7 @@ class MatGameApp(App):
         self.current_submatter_level = submatter.level
 
     def on_current_matter_name(self, *args):
+        print("list_options", dir(self))
         self.update_labels()
 
     def calc_min_and_max(self):
@@ -234,10 +235,8 @@ class MatGameApp(App):
             value2 = random.randint(_min, _max)
             new = self.calc_result(value1, value2)
             res.add(new)
-        res = list(res)
-        self.option_1 = res[0]
-        self.option_2 = res[1]
-        self.option_3 = res[2]
+        self.list_options = list(res)
+        print("res", res)
     
     def check_option(self, button):
         print()

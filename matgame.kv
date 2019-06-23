@@ -125,17 +125,17 @@
             rows: 1
             Button:
                 id: button_1
-                text: str(app.option_1)
+                text: str(app.list_options[0])
                 on_press:
                     app.check_option(self)
             Button:
                 id: button_2
-                text: str(app.option_2)
+                text: str(app.list_options[1])
                 on_press:
                     app.check_option(self)
             Button:
                 id: button_3
-                text: str(app.option_3)
+                text: str(app.list_options[2])
                 on_press:
                     app.check_option(self)
         MsgLabel
