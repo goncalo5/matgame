@@ -126,6 +126,7 @@ class MatGameApp(App):
 
     def new_problem(self):
         print("new_problem")
+        self.update_labels()
 
         if not self.can_next:
             return
