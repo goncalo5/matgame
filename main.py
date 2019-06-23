@@ -108,23 +108,19 @@ class MatGameApp(App):
         for i, submatter_name in enumerate(LIST_OF_SUBMATTER):
             self.labels_submatters_xp[i] = getattr(matter, submatter_name).xp
             self.labels_submatters_level[i] = getattr(matter, submatter_name).level
-        # self.labels_submatters_xp[0] = matter.naturals.xp
-        # self.labels_submatters_xp[1] = matter.integers.xp
-        # self.labels_submatters_level[0] = matter.naturals.level
-        # self.labels_submatters_level[1] = matter.integers.level
         self.current_submatter_xp = submatter.xp
         self.current_submatter_level = submatter.level
 
     def on_current_matter_name(self, *args):
         self.update_labels()
 
-    def update_currents(self):
-        if self.current_matter_name == "add_naturals":
-            self.current_matter_level = self.addition.naturals.level
-            self.current_matter_xp = self.addition.naturals.xp
-        elif self.current_matter_name == "add_integers":
-            self.current_matter_level = self.addition.integers.level
-            self.current_matter_xp = self.addition.integers.xp
+    # def update_currents(self):
+    #     if self.current_matter_name == "add_naturals":
+    #         self.current_matter_level = self.addition.naturals.level
+    #         self.current_matter_xp = self.addition.naturals.xp
+    #     elif self.current_matter_name == "add_integers":
+    #         self.current_matter_level = self.addition.integers.level
+    #         self.current_matter_xp = self.addition.integers.xp
 
     def calc_min_and_max(self):
         _max = self.addition.naturals.level**LEVELS.get("exponent", 2)
@@ -136,7 +132,7 @@ class MatGameApp(App):
 
     def new_problem(self):
         print("new_problem")
-        self.update_currents()
+        # self.update_currents()
 
         if not self.can_next:
             return
