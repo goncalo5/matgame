@@ -11,6 +11,22 @@ from kivy.event import EventDispatcher
 
 LEVELS = {
     "exponent": 2,
+    "addition": {
+        "naturals": {
+            "cost": 0
+        },
+        "integers": {
+            "cost": 20
+        }
+    },
+    "subtraction": {
+        "naturals": {
+            "cost": 10
+        },
+        "integers": {
+            "cost": 50
+        }
+    },
     "options": [
         "naturals",
         "integers",
@@ -54,29 +70,39 @@ class Naturals(EventDispatcher):
     counter = kp.NumericProperty(1)
     xp = kp.NumericProperty(0)
 
+    def __init__(self, cost, **kwargs):
+        super().__init__(**kwargs)
+        self.cost = cost
+
 
 class Integers(EventDispatcher):
     level = kp.NumericProperty(1)
     counter = kp.NumericProperty(1)
     xp = kp.NumericProperty(0)
 
+    def __init__(self, cost, **kwargs):
+        super().__init__(**kwargs)
+        self.cost = cost
+
 
 class Addition(EventDispatcher):
-    naturals = kp.ObjectProperty(Naturals())
-    integers = kp.ObjectProperty(Integers())
+    naturals = kp.ObjectProperty(Naturals(LEVELS["addition"]["naturals"]["cost"]))
+    integers = kp.ObjectProperty(Integers(LEVELS["addition"]["integers"]["cost"]))
 
 
 class Subtraction(EventDispatcher):
-    naturals = kp.ObjectProperty(Naturals())
-    integers = kp.ObjectProperty(Integers())
+    naturals = kp.ObjectProperty(Naturals(LEVELS["subtraction"]["naturals"]["cost"]))
+    integers = kp.ObjectProperty(Integers(LEVELS["subtraction"]["integers"]["cost"]))
 
 
 class MatGameApp(App):
     player_level = kp.NumericProperty(1)
     player_xp = kp.NumericProperty(0)
+    player_gold = kp.NumericProperty(0)
     # labels:
     labels_submatters_xp = kp.ListProperty([0, 0])
     labels_submatters_level = kp.ListProperty([0, 0])
+    labels_submatters_cost = kp.ListProperty([0, 0])
 
     problem_label = kp.StringProperty("")
     option_1 = kp.NumericProperty(1)
@@ -110,6 +136,7 @@ class MatGameApp(App):
         for i, submatter_name in enumerate(LIST_OF_SUBMATTER):
             self.labels_submatters_xp[i] = getattr(matter, submatter_name).xp
             self.labels_submatters_level[i] = getattr(matter, submatter_name).level
+            self.labels_submatters_cost[i] = getattr(matter, submatter_name).cost
         self.current_submatter_xp = submatter.xp
         self.current_submatter_level = submatter.level
 

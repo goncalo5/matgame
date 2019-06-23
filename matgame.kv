@@ -35,8 +35,12 @@
 <MatterMenu>:
     GridLayout:
         cols: 1
-        Label:
-            text: "%s Menu" % app.current_matter_name
+        GridLayout:
+            rows: 1
+            Label:
+                text: "%s Menu" % app.current_matter_name
+            Label:
+                text: "Gold: %s" % app.player_gold
         GridLayout:
             rows: 1
             Label:
@@ -44,6 +48,8 @@
                 text: "Level"
             Label:
                 text: "XP"
+            Label:
+                text: "Cost"
         GridLayout:
             rows: 1
             Button:
@@ -57,10 +63,12 @@
                 text: "level: {}".format(app.labels_submatters_level[0])
             Label:
                 text: "xp: {}".format(int(app.labels_submatters_xp[0]))
+            Label:
+                text: "gold: %s" % app.labels_submatters_cost[0]
         GridLayout:
             rows: 1
             Button:
-                text: "Integers (naturals + negatives)"
+                text: "Integer\n(naturals + negatives)"
                 on_press:
                     root.manager.transition.direction = 'left'
                     root.manager.current = "game_menu"
@@ -70,6 +78,8 @@
                 text: "level: {}".format(app.labels_submatters_level[1])
             Label:
                 text: "xp: {}".format(int(app.labels_submatters_xp[1]))
+            Label:
+                text: "gold: %s" % app.labels_submatters_cost[1]
 
         Label:
         GridLayout:
