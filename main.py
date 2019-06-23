@@ -105,6 +105,8 @@ class MatGameApp(App):
         print("current_submatter_name", self.current_submatter_name)
         matter = getattr(self, self.current_matter_name)
         submatter = getattr(matter, self.current_submatter_name)
+        self.matter = matter
+        self.submatter = submatter
         for i, submatter_name in enumerate(LIST_OF_SUBMATTER):
             self.labels_submatters_xp[i] = getattr(matter, submatter_name).xp
             self.labels_submatters_level[i] = getattr(matter, submatter_name).level
@@ -115,11 +117,11 @@ class MatGameApp(App):
         self.update_labels()
 
     def calc_min_and_max(self):
-        _max = self.addition.naturals.level**LEVELS.get("exponent", 2)
+        _max = self.submatter.level**LEVELS.get("exponent", 2)
         if self.current_submatter_name == "naturals":
             _min = 0
         if self.current_submatter_name == "integers":
-            _min = -self.addition.naturals.level**LEVELS.get("exponent", 2)
+            _min = -_max
         return _min, _max
 
     def new_problem(self):
