@@ -40,7 +40,7 @@
             Label:
                 text: "%s Menu" % app.current_matter_name
             Label:
-                text: "Gold: %s" % app.player_gold
+                text: "Gold: %s" % int(app.player_gold)
         GridLayout:
             rows: 1
             Label:
@@ -55,10 +55,11 @@
             Button:
                 text: "natural"
                 on_press:
-                    root.manager.transition.direction = 'left'
-                    root.manager.current = "game_menu"
-                    app.current_submatter_name = "naturals"
-                    app.new_problem()
+                    app.try_change_to_game_menu("naturals")
+                    # root.manager.transition.direction = 'left'
+                    # root.manager.current = "game_menu"
+                    # app.current_submatter_name = "naturals"
+                    # app.new_problem()
             Label:
                 text: "level: {}".format(app.labels_submatters_level[0])
             Label:
@@ -70,10 +71,11 @@
             Button:
                 text: "Integer\n(naturals + negatives)"
                 on_press:
-                    root.manager.transition.direction = 'left'
-                    root.manager.current = "game_menu"
-                    app.current_submatter_name = "integers"
-                    app.new_problem()
+                    app.try_change_to_game_menu("integers")
+                    # root.manager.transition.direction = 'left'
+                    # root.manager.current = "game_menu"
+                    # app.current_submatter_name = "integers"
+                    # app.new_problem()
             Label:
                 text: "level: {}".format(app.labels_submatters_level[1])
             Label:

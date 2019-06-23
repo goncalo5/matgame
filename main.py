@@ -69,6 +69,7 @@ class Naturals(EventDispatcher):
     level = kp.NumericProperty(1)
     counter = kp.NumericProperty(1)
     xp = kp.NumericProperty(0)
+    is_locked = kp.BooleanProperty(True)
 
     def __init__(self, cost, **kwargs):
         super().__init__(**kwargs)
@@ -79,6 +80,7 @@ class Integers(EventDispatcher):
     level = kp.NumericProperty(1)
     counter = kp.NumericProperty(1)
     xp = kp.NumericProperty(0)
+    is_locked = kp.BooleanProperty(True)
 
     def __init__(self, cost, **kwargs):
         super().__init__(**kwargs)
@@ -125,6 +127,28 @@ class MatGameApp(App):
     def build(self):
         self.game = Game()
         return self.game
+    
+    def try_change_to_game_menu(self, submatter_name):
+        print("try_change_to_game_menu", submatter_name)
+        
+        submatter = getattr(self.matter, submatter_name)
+
+        print("cost", submatter.cost)
+        if submatter.is_locked:
+
+            if submatter.cost <= self.player_gold:
+
+                self.player_gold -= submatter.cost
+                submatter.is_locked = False
+            else:
+                print("you dont have enough gold, sorry")
+                return
+        
+        self.game.transition.direction = 'left'
+        self.game.current = "game_menu"
+        self.current_submatter_name = "naturals"
+        self.new_problem()
+
     
     def update_labels(self):
         print("current_matter_name", self.current_matter_name)
@@ -274,6 +298,7 @@ class MatGameApp(App):
         self.can_check_option = False
         self.can_next = True
     
+
         print(3)
         print("addition natural", self.addition.naturals.xp)
         print("addition integer", self.addition.integers.xp)
