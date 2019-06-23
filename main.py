@@ -16,7 +16,7 @@ LEVELS = {
             "cost": 0
         },
         "integers": {
-            "cost": 20
+            "cost": 0
         }
     },
     "subtraction": {
@@ -146,8 +146,9 @@ class MatGameApp(App):
         
         self.game.transition.direction = 'left'
         self.game.current = "game_menu"
-        self.current_submatter_name = "naturals"
+        self.current_submatter_name = submatter_name
         self.new_problem()
+        self.update_labels()
 
     
     def update_labels(self):
@@ -177,11 +178,14 @@ class MatGameApp(App):
 
     def new_problem(self):
         print("new_problem")
+        print("self.current_matter_name", self.current_matter_name)
+        print("self.current_submatter_name", self.current_submatter_name)
         self.update_labels()
 
         if not self.can_next:
             return
         print("self.current_matter_name", self.current_matter_name)
+        print("self.current_submatter_name", self.current_submatter_name)
         self.can_next = False
         self.can_check_option = True
         self.current_xp_to_add_label = ""
