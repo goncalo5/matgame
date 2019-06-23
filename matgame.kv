@@ -16,16 +16,27 @@
             Button:
                 text: "Addition"
                 on_press:
+                    app.current_matter_name = "addition"
                     root.manager.transition.direction = 'left'
-                    root.manager.current = "add_menu"
+                    root.manager.current = "matter_menu"
             Label:
                 text: str(app.addition.naturals.level + app.addition.integers.level)
+        GridLayout:
+            rows: 1
+            Button:
+                text: "Subtraction"
+                on_press:
+                    app.current_matter_name = "subtraction"
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = "matter_menu"
+            Label:
+                text: str(app.subtraction.naturals.level + app.subtraction.integers.level)
 
-<AddMenu>:
+<MatterMenu>:
     GridLayout:
         cols: 1
         Label:
-            text: "Addition Menu"
+            text: "%s Menu" % app.current_matter_name
         GridLayout:
             rows: 1
             Label:
@@ -40,12 +51,12 @@
                 on_press:
                     root.manager.transition.direction = 'left'
                     root.manager.current = "game_menu"
-                    app.change_current_matter("add_naturals")
+                    app.current_submatter_name = "naturals"
                     app.new_problem()
             Label:
-                text: "level: {}".format(app.addition.naturals.level)
+                text: "level: {}".format(app.labels_submatters_level[0])
             Label:
-                text: "xp: {}".format(int(app.addition.naturals.xp))
+                text: "xp: {}".format(int(app.labels_submatters_xp[0]))
         GridLayout:
             rows: 1
             Button:
@@ -53,12 +64,13 @@
                 on_press:
                     root.manager.transition.direction = 'left'
                     root.manager.current = "game_menu"
-                    app.change_current_matter("add_integers")
+                    # app.change_current_matter("add_integers")
+                    app.current_submatter_name = "integers"
                     app.new_problem()
             Label:
-                text: "level: {}".format(app.addition.integers.level)
+                text: "level: {}".format(app.labels_submatters_level[1])
             Label:
-                text: "xp: {}".format(int(app.addition.integers.xp))
+                text: "xp: {}".format(int(app.labels_submatters_xp[1]))
 
         Label:
         GridLayout:
@@ -77,9 +89,9 @@
 <LevelAndXPHeader@GridLayout>:
     rows: 1
     Label:
-        text: "level: {}".format(app.current_matter_level)
+        text: "level: {}".format(app.current_submatter_level)
     Label:
-        text: "xp: {}".format(int(app.current_matter_xp))
+        text: "xp: {}".format(int(app.current_submatter_xp))
 
 <ProblemLabel@Label>:
     id: problem_label
@@ -121,11 +133,12 @@
             Button:
                 text: "Back"
                 on_press:
+                    app.update_labels()
                     root.button_1.background_color = 1,1,1,1
                     root.button_2.background_color = 1,1,1,1
                     root.button_3.background_color = 1,1,1,1
                     root.manager.transition.direction = 'right'
-                    root.manager.current = "add_menu"
+                    root.manager.current = "matter_menu"
             Label
             Button:
                 text: "next"
@@ -139,15 +152,15 @@
 <Game>:
     id: screen_manager
     menu: menu
-    add_menu: add_menu
+    matter_menu: matter_menu
     game_menu: game_menu
     Menu:
         id: menu
         name: "menu"
         manager: screen_manager
-    AddMenu:
-        id: add_menu
-        name: "add_menu"
+    MatterMenu:
+        id: matter_menu
+        name: "matter_menu"
         manager: screen_manager
     GameMenu:
         id: game_menu
