@@ -137,10 +137,14 @@ class MatGameApp(App):
         value1 = random.randint(_min, _max)
         value2 = random.randint(_min, _max)
 
-        if self.current_matter_name == "addition":
-            self.problem_label = str("{} + {}".format(value1, value2))
-        elif self.current_matter_name == "subtraction":
-            self.problem_label = str("{} - {}".format(value1, value2))
+        map_matter2sign = {
+            "addition": "+",
+            "subtraction": "-",
+            "multiplication": "x",
+            "divison": "/",
+        }
+        sign = map_matter2sign.get(self.current_matter_name)
+        self.problem_label = str("{} {} {}".format(value1, sign, value2))
 
         self.correct_option = self.calc_result(value1, value2)
 
