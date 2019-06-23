@@ -31,6 +31,8 @@ MENU_MATTERS = {
     "add_integers": "Integers (naturals + negatives)"
 }
 
+LIST_OF_SUBMATTER = ["naturals", "integers"]
+
 class Menu(Screen):
     pass
 
@@ -101,20 +103,17 @@ class MatGameApp(App):
     def update_labels(self):
         print("current_matter_name", self.current_matter_name)
         print("current_submatter_name", self.current_submatter_name)
-        if "add" in self.current_matter_name:
-            matter = self.addition
-        elif "subtraction" in self.current_matter_name:
-            matter = self.subtraction
-        if "natural" in self.current_submatter_name:
-            submater = matter.naturals
-        elif "integer" in self.current_submatter_name:
-            submater = matter.integers
-        self.labels_submatters_xp[0] = matter.naturals.xp
-        self.labels_submatters_xp[1] = matter.integers.xp
-        self.labels_submatters_level[0] = matter.naturals.level
-        self.labels_submatters_level[1] = matter.integers.level
-        self.current_submatter_xp = submater.xp
-        self.current_submatter_level = submater.level
+        matter = getattr(self, self.current_matter_name)
+        submatter = getattr(matter, self.current_submatter_name)
+        for i, submatter_name in enumerate(LIST_OF_SUBMATTER):
+            self.labels_submatters_xp[i] = getattr(matter, submatter_name).xp
+            self.labels_submatters_level[i] = getattr(matter, submatter_name).level
+        # self.labels_submatters_xp[0] = matter.naturals.xp
+        # self.labels_submatters_xp[1] = matter.integers.xp
+        # self.labels_submatters_level[0] = matter.naturals.level
+        # self.labels_submatters_level[1] = matter.integers.level
+        self.current_submatter_xp = submatter.xp
+        self.current_submatter_level = submatter.level
 
     def on_current_matter_name(self, *args):
         self.update_labels()
