@@ -114,14 +114,6 @@ class MatGameApp(App):
     def on_current_matter_name(self, *args):
         self.update_labels()
 
-    # def update_currents(self):
-    #     if self.current_matter_name == "add_naturals":
-    #         self.current_matter_level = self.addition.naturals.level
-    #         self.current_matter_xp = self.addition.naturals.xp
-    #     elif self.current_matter_name == "add_integers":
-    #         self.current_matter_level = self.addition.integers.level
-    #         self.current_matter_xp = self.addition.integers.xp
-
     def calc_min_and_max(self):
         _max = self.addition.naturals.level**LEVELS.get("exponent", 2)
         if self.current_submatter_name == "naturals":
@@ -132,7 +124,6 @@ class MatGameApp(App):
 
     def new_problem(self):
         print("new_problem")
-        # self.update_currents()
 
         if not self.can_next:
             return
@@ -144,13 +135,20 @@ class MatGameApp(App):
         value1 = random.randint(_min, _max)
         value2 = random.randint(_min, _max)
 
-        self.problem_label = str("{} + {}".format(value1, value2))
+        if self.current_matter_name == "addition":
+            self.problem_label = str("{} + {}".format(value1, value2))
+        elif self.current_matter_name == "subtraction":
+            self.problem_label = str("{} - {}".format(value1, value2))
+
         self.correct_option = self.calc_result(value1, value2)
 
         self.update_options()
     
     def calc_result(self, value1, value2):
-        return value1 + value2
+        if self.current_matter_name == "addition":
+            return value1 + value2
+        elif self.current_matter_name == "subtraction":
+            return value1 - value2
 
     def update_options(self):
         res = {self.correct_option}
