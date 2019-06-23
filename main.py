@@ -268,6 +268,7 @@ class MatGameApp(App):
 
         submatter.xp += to_add
         Animation(current_submatter_xp=submatter.xp, duration=0.5).start(self)
+        Animation(player_gold=self.player_gold + to_add, duration=0.5).start(self)
         self.current_xp_to_add_label = "{} {}".format(sign, to_add)
 
         self.can_check_option = False
