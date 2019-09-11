@@ -100,10 +100,14 @@ class Subtraction(EventDispatcher):
     integers = kp.ObjectProperty(Integers(LEVELS["subtraction"]["integers"]["cost"]))
 
 
+class Player(EventDispatcher):
+    level = kp.NumericProperty(1)
+    xp = kp.NumericProperty(0)
+    gold = kp.NumericProperty(0)
+
+
 class GameApp(App):
-    player_level = kp.NumericProperty(1)
-    player_xp = kp.NumericProperty(0)
-    player_gold = kp.NumericProperty(0)
+    player = kp.ObjectProperty(Player())
     # labels:
     labels_submatters_xp = kp.ListProperty([0, 0])
     labels_submatters_level = kp.ListProperty([0, 0])
@@ -143,9 +147,9 @@ class GameApp(App):
         print("cost", submatter.cost)
         if submatter.is_locked:
 
-            if submatter.cost <= self.player_gold:
+            if submatter.cost <= self.player.gold:
 
-                self.player_gold -= submatter.cost
+                self.player.gold -= submatter.cost
                 submatter.is_locked = False
             else:
                 print("you dont have enough gold, sorry")
@@ -304,7 +308,7 @@ class GameApp(App):
 
         submatter.xp += to_add
         Animation(current_submatter_xp=submatter.xp, duration=0.5).start(self)
-        Animation(player_gold=self.player_gold + to_add, duration=0.5).start(self)
+        Animation(gold=self.player.gold + to_add, duration=0.5).start(self.player)
         self.current_xp_to_add_label = "{} {}".format(sign, to_add)
 
         self.can_check_option = False

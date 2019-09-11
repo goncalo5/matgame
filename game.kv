@@ -4,7 +4,7 @@
         cols: 1
         Label:
             id: player_level
-            text: "level: {}".format(app.player_level)
+            text: "level: {}".format(app.player.level)
         GridLayout:
             rows: 1
             Label:
@@ -40,7 +40,7 @@
             Label:
                 text: "%s Menu" % app.current_matter_name
             Label:
-                text: "Gold: %s" % int(app.player_gold)
+                text: "Gold: %s" % int(app.player.gold)
         GridLayout:
             rows: 1
             Label:
@@ -106,7 +106,7 @@
     Label:
         text: "xp: {}".format(int(app.current_submatter_xp))
     Label:
-        text: "gold: {}".format(int(app.player_gold))
+        text: "gold: {}".format(int(app.player.gold))
 
 <ProblemLabel@Label>:
     id: problem_label
