@@ -69,7 +69,7 @@
         GridLayout:
             rows: 1
             Button:
-                text: "Integer\n(naturals + negatives)"
+                text: "Integer"
                 on_press:
                     app.try_change_to_game_menu("integers")
                     # root.manager.transition.direction = 'left'
@@ -95,7 +95,9 @@
 <MatterHeader@GridLayout>:
     rows: 1
     Label:
-        text: "%s %s" % (app.current_matter_name, app.current_submatter_name)
+        text:
+            "%s %s %s" % \
+            (app.current_matter_name, app.current_submatter_name, app.current_submatter_description)
 
 <LevelAndXPHeader@GridLayout>:
     rows: 1

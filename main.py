@@ -7,6 +7,8 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy import properties as kp
 from kivy.animation import Animation
 from kivy.event import EventDispatcher
+# self:
+from settings import INTEGERS
 
 
 LEVELS = {
@@ -65,22 +67,23 @@ class Game(ScreenManager):
     pass
 
 
-class Naturals(EventDispatcher):
+class SubMatter(EventDispatcher):
     level = kp.NumericProperty(1)
     counter = kp.NumericProperty(1)
     xp = kp.NumericProperty(0)
     is_locked = kp.BooleanProperty(True)
+    description = kp.StringProperty()
+
+
+class Naturals(SubMatter):
 
     def __init__(self, cost, **kwargs):
         super().__init__(**kwargs)
         self.cost = cost
 
 
-class Integers(EventDispatcher):
-    level = kp.NumericProperty(1)
-    counter = kp.NumericProperty(1)
-    xp = kp.NumericProperty(0)
-    is_locked = kp.BooleanProperty(True)
+class Integers(SubMatter):
+    description = kp.StringProperty(INTEGERS.get("description"))
 
     def __init__(self, cost, **kwargs):
         super().__init__(**kwargs)
@@ -114,6 +117,7 @@ class MatGameApp(App):
     msg_color = kp.ListProperty([0,1,0,1])
     current_matter_name = kp.StringProperty("add_naturals")
     current_submatter_name = kp.StringProperty("naturals")
+    current_submatter_description = kp.StringProperty("")
     current_matter_level = kp.NumericProperty(1)
     current_submatter_level = kp.NumericProperty(1)
     current_matter_xp = kp.NumericProperty(1)
@@ -150,6 +154,7 @@ class MatGameApp(App):
         self.game.transition.direction = 'left'
         self.game.current = "game_menu"
         self.current_submatter_name = submatter_name
+        self.current_submatter_description = submatter.description
         
         self.new_problem()
         self.update_labels()

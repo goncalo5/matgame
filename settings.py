@@ -1,0 +1,3 @@
+INTEGERS = {
+    "description": "(naturals + negatives)"
+}
