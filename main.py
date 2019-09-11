@@ -100,7 +100,7 @@ class Subtraction(EventDispatcher):
     integers = kp.ObjectProperty(Integers(LEVELS["subtraction"]["integers"]["cost"]))
 
 
-class MatGameApp(App):
+class GameApp(App):
     player_level = kp.NumericProperty(1)
     player_xp = kp.NumericProperty(0)
     player_gold = kp.NumericProperty(0)
@@ -323,4 +323,4 @@ class MatGameApp(App):
 
 
 if __name__ == "__main__":
-    MatGameApp().run()
+    GameApp().run()
